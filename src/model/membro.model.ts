@@ -1,7 +1,6 @@
-export class Igreja {
+export class Membro {
     key?: string;
     nome : string = null;
-    responsavel : string = null;
     telefone : string = null;
     cep: string = null;
     endereco : string = null;

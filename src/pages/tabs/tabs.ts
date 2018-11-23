@@ -13,8 +13,8 @@ export class TabsPage {
 
   tab1Root = 'HomePage';
   tab2Root = 'MapaPage';
-  tab3Root = 'ChatPage';
-  tab4Root = 'ContactPage';
+  //tab3Root = 'ChatPage';
+  //tab4Root = 'ContactPage';
 
   celulaList: Observable<Celula[]>
 
@@ -27,6 +27,11 @@ export class TabsPage {
   }
   
   async getFromFirebaseAsync(){
-    this.celulaList = await this.celulaService.getAll(this.authService.getCode());
+    if(this.authService.getCode() == null){
+      this.celulaList = await this.celulaService.getAllPublic();
+    }else{
+      this.celulaList = await this.celulaService.getAllPrivate(this.authService.getCode());
+    }
+    
   }
 }

@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { AngularFireAuth } from "angularfire2/auth";
 import { FormBuilder, Validators } from '@angular/forms';
-import { UUID } from 'angular2-uuid';
-import { Igreja } from '../../model/igreja.model';
+import { Membro } from '../../model/membro.model';
 import { EnderecoProvider } from '../../providers/endereco/endereco';
-import { IgrejaService } from '../../providers/igreja/igreja.service';
+import { MembroService } from '../../providers/membro/membro.service';
 import { LoadingService } from '../../providers/loading.service';
 
 @IonicPage()
@@ -20,7 +19,7 @@ export class RegisterPage {
   messagePassword = "";
   errorEmail = false;
   errorPassword = false;
-  igreja = {} as Igreja;
+  membro = {} as Membro;
   code: string;
 
   constructor(
@@ -30,18 +29,17 @@ export class RegisterPage {
     public navParams: NavParams, 
     public formBuilder: FormBuilder,
     private enderecoService: EnderecoProvider,
-    private igrejaService: IgrejaService,
+    private membroService: MembroService,
     public loading: LoadingService) {
 
-      this.generateCode();
       this.loginForm = formBuilder.group({
         nome: ['', Validators.required],
-        resp: ['', Validators.required],
         tel: ['', Validators.required],
         cep: ['', Validators.required],
         endereco: ['', Validators.required],
         email: ['', Validators.required],
-        senha: ['', Validators.required]
+        senha: ['', Validators.required],
+        code: ['', Validators.required],
       });
   }
 
@@ -49,12 +47,11 @@ export class RegisterPage {
     let toast = this.toastCtrl.create({ duration: 3000, position: 'bottom' });
     try {
       await this.loading.present('Cadastrando...');
-      await this.afAuth.auth.createUserWithEmailAndPassword(this.igreja.email, this.igreja.senha);
-      this.igreja.senha = null;
-      this.igreja.code = this.generateCode();
-      await this.igrejaService.save(this.igreja);
+      await this.afAuth.auth.createUserWithEmailAndPassword(this.membro.email, this.membro.senha);
+      this.membro.senha = null;
+      await this.membroService.save(this.membro);
       await this.loading.dismiss();
-      toast.setMessage('Igreja cadastra com sucesso.');
+      toast.setMessage('Cadastra realizado com sucesso.');
       this.navCtrl.pop();
     }
     catch (error) {
@@ -83,19 +80,13 @@ export class RegisterPage {
 
   getEndereco() {
     //this.cep = '53421180'
-    this.enderecoService.getEndereco(this.igreja.cep)
+    this.enderecoService.getEndereco(this.membro.cep)
       .then((result: string) => {
-        this.igreja.endereco = result;
+        this.membro.endereco = result;
       })
       .catch((error: string) => {
         console.error('Erro ao tentar consultar cep.');
       });
   }
 
-  generateCode(): string {
-    this.code = UUID.UUID();
-    let ret = this.code.split("-");
-    this.code = ret[1];
-    return this.code;
-  }
 }

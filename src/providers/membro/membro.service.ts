@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { Igreja } from '../../model/igreja.model';
+import { Membro } from '../../model/membro.model';
 
 @Injectable()
-export class IgrejaService {
+export class MembroService {
 
-  private PATH = 'Igrejas/';
+  private PATH = 'Membros/';
 
   constructor(private db: AngularFireDatabase) {
   }
@@ -19,30 +19,30 @@ export class IgrejaService {
   }
 
 
-  get(igreja: Igreja) {
-    return this.db.object(this.PATH + igreja.key)
-    .snapshotChanges()
-      .map(c => {
-        return { key: c.key, ...c.payload.val() };
-      });
-  }
+  // get(igreja: Membro) {
+  //   return this.db.object(this.PATH + igreja.key)
+  //   .snapshotChanges()
+  //     .map(c => {
+  //       return { key: c.key, ...c.payload.val() };
+  //     });
+  // }
 
-  save(igreja: Igreja) {
+  save(membro: Membro) {
     return new Promise((resolve, reject) => {
-      if (igreja.key) {
+      if (membro.key) {
         this.db.list(this.PATH)
-          .update(igreja.key, igreja)
+          .update(membro.key, membro)
           .then(() => resolve())
           .catch((e) => reject(e));
       } else {
         this.db.list(this.PATH)
-          .push(igreja)
+          .push(membro)
           .then(() => resolve());
       }
     })
   }
 
-  remove(key: string) {
-    return this.db.list(this.PATH).remove(key);
-  }
+  // remove(key: string) {
+  //   return this.db.list(this.PATH).remove(key);
+  // }
 }

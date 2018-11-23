@@ -1,11 +1,12 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Nossas Celulas
+      Celulas Religiosas
     </ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="openCadastroCelula(edit)">
-        <ion-icon name="md-add-circle"></ion-icon>
+      <button ion-button icon-only (click)="openPageLogin()">
+        {{ icon == 'ios-log-in' ? 'Entar' : 'Sair' }}
+        <ion-icon [name]="icon"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -13,6 +14,10 @@
     <ion-searchbar (ionInput)="filterItems($event)" placeholder="Search">
     </ion-searchbar>
   </ion-toolbar>
+  <ion-toolbar>
+      <ion-searchbar (ionInput)="filterItems($event)" placeholder="Search">
+      </ion-searchbar>
+    </ion-toolbar>
 </ion-header>
 <ion-content no-padding>
   <ion-grid style="height: 100%" *ngIf="(celulaList | async) == 0">
@@ -36,16 +41,6 @@
         <button ion-button color="secondary" (click)="more(item, celula)">
           <ion-icon name="menu"></ion-icon>
           Mais
-        </button>
-        <button ion-button color="dark" (click)="editCell(item, celula)">
-          <ion-icon name="create"></ion-icon>
-          Editar
-        </button>
-      </ion-item-options>
-      <ion-item-options side="left">
-        <button ion-button color="danger" (click)="presentAlertConfirmation(item, celula)">
-          <ion-icon name="trash"></ion-icon>
-          Delete
         </button>
       </ion-item-options>
     </ion-item-sliding>

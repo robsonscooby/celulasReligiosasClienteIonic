@@ -10,7 +10,15 @@ export class CelulaService {
   constructor(private db: AngularFireDatabase) {
   }
 
-  getAll(code: string) {
+  getAllPublic() {
+    return this.db.list(this.PATH, ref => ref.orderByChild('status').equalTo(true))
+      .snapshotChanges()
+      .map(changes => {
+        return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+      })
+  }
+
+  getAllPrivate(code: string) {
     return this.db.list(this.PATH, ref => ref.orderByChild('code').equalTo(code))
       .snapshotChanges()
       .map(changes => {
@@ -25,23 +33,23 @@ export class CelulaService {
       });
   }
 
-  save(celula: Celula) {
-    celula = JSON.parse( JSON.stringify(celula))
-    return new Promise((resolve, reject) => {
-      if (celula.key) {
-        this.db.list(this.PATH)
-          .update(celula.key, celula)
-          .then(() => resolve())
-          .catch((e) => reject(e));
-      } else {
-        this.db.list(this.PATH)
-          .push(celula)
-          .then(() => resolve());
-      }
-    })
-  }
+  // save(celula: Celula) {
+  //   celula = JSON.parse( JSON.stringify(celula))
+  //   return new Promise((resolve, reject) => {
+  //     if (celula.key) {
+  //       this.db.list(this.PATH)
+  //         .update(celula.key, celula)
+  //         .then(() => resolve())
+  //         .catch((e) => reject(e));
+  //     } else {
+  //       this.db.list(this.PATH)
+  //         .push(celula)
+  //         .then(() => resolve());
+  //     }
+  //   })
+  // }
 
-  remove(key: string) {
-    return this.db.list(this.PATH).remove(key);
-  }
+  // remove(key: string) {
+  //   return this.db.list(this.PATH).remove(key);
+  // }
 }

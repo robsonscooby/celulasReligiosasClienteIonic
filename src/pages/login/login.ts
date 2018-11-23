@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { User } from "../../model/user.model";
 import { FormBuilder, Validators } from '@angular/forms';
-import { IgrejaService } from '../../providers/igreja/igreja.service';
-import { Igreja } from '../../model/igreja.model';
+import { MembroService } from '../../providers/membro/membro.service';
+import { Membro } from '../../model/membro.model';
 import { LoadingService } from '../../providers/loading.service';
 import { AuthService } from '../../providers/auth/auth-service';
 
@@ -20,7 +20,7 @@ export class LoginPage {
   errorEmail = false;
   errorPassword = false;
   user = {} as User;
-  retUser: Igreja;
+  retUser: Membro;
 
   constructor(
     public authService: AuthService,
@@ -28,7 +28,7 @@ export class LoginPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public formBuilder: FormBuilder,
-    private igrejaService: IgrejaService,
+    private membroService: MembroService,
     public loadingService: LoadingService) {
 
     this.loginForm = formBuilder.group({
@@ -43,7 +43,7 @@ export class LoginPage {
     try {
       await this.loadingService.present('Logando...');
       this.authService.signIn(user).then(async () => {
-        await this.buscarIgreja(user.email);
+        await this.buscarMembro(user.email);
         this.authService.setCode(this.retUser.code);
         this.navCtrl.setRoot('TabsPage');
       })
@@ -62,9 +62,9 @@ export class LoginPage {
     }
   }
 
-  buscarIgreja(email: string): Promise<Igreja> {
+  buscarMembro(email: string): Promise<Membro> {
     return new Promise(async (resolve) => {
-      await this.igrejaService.getUser(email).subscribe(u => u.filter(r => {
+      await this.membroService.getUser(email).subscribe(u => u.filter(r => {
         resolve(this.retUser = r)
       })).unsubscribe;
     });

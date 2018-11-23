@@ -1,51 +1,52 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Cadastro Igreja</ion-title>
+    <ion-title>Cadastro</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <form [formGroup]="loginForm" (submit)="validalogin(user)" novalidate>
     <ion-item>
-      <ion-label floating>Nome da Igreja</ion-label>
-      <ion-input [(ngModel)]="igreja.nome" formControlName="nome" type="text" placeholder="Nome da Igreja" clearInput
-        clearOnEdit="false"></ion-input>
-    </ion-item>
-    <ion-item>
       <ion-label floating>Seu Nome</ion-label>
-      <ion-input [(ngModel)]="igreja.responsavel" formControlName="resp" type="text" placeholder="Seu Nome" clearInput
+      <ion-input [(ngModel)]="membro.nome" formControlName="nome" type="text" placeholder="Seu Nome" clearInput
         clearOnEdit="false"></ion-input>
     </ion-item>
-    <ion-input-mask type="text" placeholder="Telefone" formControlName="tel" [(ngModel)]="igreja.telefone" mask="(99) 99999-9999"></ion-input-mask>
+    <ion-input-mask type="text" placeholder="Telefone" formControlName="tel" [(ngModel)]="membro.telefone" mask="(99) 99999-9999"></ion-input-mask>
     <ion-row>
       <ion-col>
-        <ion-input-mask [(ngModel)]="igreja.cep" formControlName="cep" type="text" placeholder="Cep" mask="99.999-999"
+        <ion-input-mask [(ngModel)]="membro.cep" formControlName="cep" type="text" placeholder="Cep" mask="99.999-999"
           [clearIfNotMatch]="true" [lastChild]="true" [dropSpecialCharacters]="true">
         </ion-input-mask>
       </ion-col>
       <ion-col class="button-padding">
-        <button ion-button [disabled]='igreja.cep == null || igreja.cep.length < 8' type="button" block outline (click)='getEndereco()'>
+        <button ion-button [disabled]='membro.cep == null || membro.cep.length < 8' type="button" block outline (click)='getEndereco()'>
           <ion-icon name="search"></ion-icon>
         </button>
       </ion-col>
     </ion-row>
     <ion-item>
-      <ion-input [(ngModel)]="igreja.endereco" formControlName="endereco" type="text" placeholder="Endereço" clearInput
+      <ion-input [(ngModel)]="membro.endereco" formControlName="endereco" type="text" placeholder="Endereço" clearInput
         clearOnEdit="false">
       </ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>E-mail</ion-label>
-      <ion-input [(ngModel)]="igreja.email" formControlName="email" type="text" placeholder="E-mail" clearInput
+      <ion-input [(ngModel)]="membro.email" formControlName="email" type="text" placeholder="E-mail" clearInput
         clearOnEdit="false">
       </ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Senha</ion-label>
-      <ion-input [(ngModel)]="igreja.senha" formControlName="senha" type="password" placeholder="Senha" clearInput
+      <ion-input [(ngModel)]="membro.senha" formControlName="senha" type="password" placeholder="Senha" clearInput
         clearOnEdit="false">
       </ion-input>
     </ion-item>
+    <ion-item>
+        <ion-label floating>Código Igreja</ion-label>
+        <ion-input [(ngModel)]="membro.code" formControlName="code" type="text" placeholder="Código Igreja" clearInput
+          clearOnEdit="false">
+        </ion-input>
+      </ion-item>
     <p></p>
     <ion-buttons text-center>
       <button ion-button round outline type="submit">Registrar</button>
