@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Nossas Celulas
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openCadastroCelula(edit)">
+        <ion-icon name="md-add-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="filterItems($event)" placeholder="Search">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content no-padding>
+  <ion-grid style="height: 100%" *ngIf="(celulaList | async) == 0">
+    <ion-row ion-row justify-content-center align-items-center style="height: 100%">
+      <div text-center>
+        <ion-icon size="large" name="md-thumbs-down" color="medium"></ion-icon>
+        <ion-label no-margin color="medium">Lista de Celulas vazia.</ion-label>
+      </div>
+    </ion-row>
+  </ion-grid>
+  <ion-list>
+    <ion-item-sliding *ngFor="let celula of celulaList | async" #item>
+      <ion-item>
+        <ion-avatar item-start>
+          <img [src]="celula.thumbnailURL ? celula.thumbnailURL : 'assets/imgs/logo.png'">
+        </ion-avatar>
+        <h2>{{celula.nome}}</h2>
+        <p>{{celula.descricao}}</p>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="secondary" (click)="more(item, celula)">
+          <ion-icon name="menu"></ion-icon>
+          Mais
+        </button>
+        <button ion-button color="dark" (click)="editCell(item, celula)">
+          <ion-icon name="create"></ion-icon>
+          Editar
+        </button>
+      </ion-item-options>
+      <ion-item-options side="left">
+        <button ion-button color="danger" (click)="presentAlertConfirmation(item, celula)">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Contato</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="transparent-header">
+
+  <div id="profile-bg" [ngStyle]="{'background-image': 'url(' + user.coverImage +')'}"></div>
+  <div id="content">
+    <div id="profile-info" padding>
+      <img id="profile-image" [src]="user.profileImage">
+      <h3 id="profile-name">{{user.name}}</h3>
+      <p>{{user.occupation}} &bull; {{user.location}}</p>
+      <p class="profile-description">{{user.description}}</p>
+      <p> 
+        <ion-icon name="mail" color="primary" item-start></ion-icon>
+        <b> {{user.email}}</b>
+      </p>
+    </div>
+    <hr/>
+    Seu código:
+    <h1><b>{{ auth.getCode() }}</b></h1>
+  </div>
+</ion-content>
