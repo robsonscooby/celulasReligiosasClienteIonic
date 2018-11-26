@@ -79,7 +79,6 @@ export class RegisterPage {
     
 
   getEndereco() {
-    //this.cep = '53421180'
     this.enderecoService.getEndereco(this.membro.cep)
       .then((result: string) => {
         this.membro.endereco = result;

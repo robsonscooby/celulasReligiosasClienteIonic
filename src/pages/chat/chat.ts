@@ -106,10 +106,6 @@ export class ChatPage {
     this.chatManagement = 'name';
   }
 
-  configChat(): void {
-    this.navCtrl.push('ConfigChatPage',{'rooms' : this.rooms});
-  }
-
 }
 
 export const snapshotToArray = snapshot => {

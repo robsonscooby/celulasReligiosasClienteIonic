@@ -5,6 +5,7 @@ import { Celula } from '../../model/celula.model';
 import { LoadingService } from '../../providers/loading.service';
 import { FirebaseMessagingProvider } from '../../providers/firebase-messaging';
 import { AuthService } from '../../providers/auth/auth-service';
+import { App } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -23,7 +24,8 @@ export class HomePage {
     public params: NavParams,
     public loadingService: LoadingService,
     public fireMessege: FirebaseMessagingProvider,
-    public authService: AuthService) {
+    public authService: AuthService,
+    public app: App) {
 
       if(this.authService.getCode() == null){
         this.icon = 'ios-log-in';
@@ -35,30 +37,14 @@ export class HomePage {
       this.bkList = this.celulaList;
   }
 
-  ionViewWillLoad() {
-    // this.loading.present();
-    // this.afAuth.authState.subscribe(data => {
-    //   if (data && data.email && data.uid) {
-    //     this.toast.create({
-    //       message: `Bem vindo!, ${data.email}`,
-    //       duration: 3000
-    //     }).present();
-    //   } else {
-    //     this.toast.create({
-    //       message: `Não foi possível se autenticação.`,
-    //       duration: 3000
-    //     }).present();
-    //   }
-    // })
-    // this.loading.dismiss();
-  }
+  ionViewWillLoad() {}
 
-  openPageLogin() :void {
+  async openPageLogin() :Promise<void> {
     if(this.authService.getCode() == null){
-      this.navCtrl.push('LoginPage');
+      this.app.getRootNav().setRoot('LoginPage');
     }else{
-      this.authService.signOut();
-      this.navCtrl.setRoot('TabsPage');
+      await this.authService.signOut();
+      this.app.getRootNav().setRoot('TabsPage'); 
     }
     
   }

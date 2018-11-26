@@ -13,8 +13,8 @@ export class TabsPage {
 
   tab1Root = 'HomePage';
   tab2Root = 'MapaPage';
-  //tab3Root = 'ChatPage';
-  //tab4Root = 'ContactPage';
+  tab3Root = 'ChatPage';
+  tab4Root = 'ContactPage';
 
   celulaList: Observable<Celula[]>
 
@@ -25,6 +25,8 @@ export class TabsPage {
 
     this.getFromFirebaseAsync();
   }
+
+  ionViewWillLoad() {}
   
   async getFromFirebaseAsync(){
     if(this.authService.getCode() == null){

@@ -1,11 +1,6 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Bate-papo</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="configChat()">
-        <ion-icon name="settings"></ion-icon>
-      </button>
-    </ion-buttons>
     <ion-buttons end *ngIf="chatManagement == 'chat'">
       <button ion-button icon-only (click)="exitChat()">
         <ion-icon name="ios-log-out"></ion-icon>

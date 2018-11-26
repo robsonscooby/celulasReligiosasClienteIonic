@@ -32,24 +32,4 @@ export class CelulaService {
         return { key: c.key, ...c.payload.val() };
       });
   }
-
-  // save(celula: Celula) {
-  //   celula = JSON.parse( JSON.stringify(celula))
-  //   return new Promise((resolve, reject) => {
-  //     if (celula.key) {
-  //       this.db.list(this.PATH)
-  //         .update(celula.key, celula)
-  //         .then(() => resolve())
-  //         .catch((e) => reject(e));
-  //     } else {
-  //       this.db.list(this.PATH)
-  //         .push(celula)
-  //         .then(() => resolve());
-  //     }
-  //   })
-  // }
-
-  // remove(key: string) {
-  //   return this.db.list(this.PATH).remove(key);
-  // }
 }

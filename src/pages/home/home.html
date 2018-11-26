@@ -14,10 +14,6 @@
     <ion-searchbar (ionInput)="filterItems($event)" placeholder="Search">
     </ion-searchbar>
   </ion-toolbar>
-  <ion-toolbar>
-      <ion-searchbar (ionInput)="filterItems($event)" placeholder="Search">
-      </ion-searchbar>
-    </ion-toolbar>
 </ion-header>
 <ion-content no-padding>
   <ion-grid style="height: 100%" *ngIf="(celulaList | async) == 0">
