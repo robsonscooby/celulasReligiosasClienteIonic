@@ -101,11 +101,11 @@ export class LoginPage {
     }
   }
 
-  resetPassword() {
+  resetPassword(): void {
     this.navCtrl.push('ResetpasswordPage');
   }
 
-  back() {
+  back(): void {
     this.navCtrl.setRoot('TabsPage');
   }
 

@@ -4,9 +4,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class EnderecoProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello EnderecoProvider Provider');
-  }
+  constructor(public http: HttpClient) {}
 
   getEndereco(cep: string)  {
     return new Promise((resolve, reject) => {

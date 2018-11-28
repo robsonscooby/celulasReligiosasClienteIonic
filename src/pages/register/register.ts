@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from "angularfire2/auth";
 import { FormBuilder, Validators } from '@angular/forms';
 import { Membro } from '../../model/membro.model';
 import { EnderecoProvider } from '../../providers/endereco/endereco';
 import { MembroService } from '../../providers/membro/membro.service';
 import { LoadingService } from '../../providers/loading.service';
+import { IgrejaService } from '../../providers/igreja/igreja.service';
 
 @IonicPage()
 @Component({
@@ -30,7 +31,9 @@ export class RegisterPage {
     public formBuilder: FormBuilder,
     private enderecoService: EnderecoProvider,
     private membroService: MembroService,
-    public loading: LoadingService) {
+    public loading: LoadingService,
+    private igrejaService: IgrejaService,
+    private alertCtrl: AlertController) {
 
       this.loginForm = formBuilder.group({
         nome: ['', Validators.required],
@@ -71,13 +74,12 @@ export class RegisterPage {
 
   validalogin() {
     if (this.loginForm.valid) {
-      this.registerLogin();
+      this.buscarCode(this.membro.code);
     }else{
-      console.log('Favor Preencher todos os campos.');
+      this.presentAlert('Favor Preencher todos os campos.');
     }
   }
     
-
   getEndereco() {
     this.enderecoService.getEndereco(this.membro.cep)
       .then((result: string) => {
@@ -86,6 +88,32 @@ export class RegisterPage {
       .catch((error: string) => {
         console.error('Erro ao tentar consultar cep.');
       });
+  }
+
+  async buscarCode(code: string): Promise<any> {
+    return new Promise(async (resolve) => {
+      await this.igrejaService.getAll(code).subscribe(async (res) => {
+        if(!res.length){
+          this.presentAlert('Código inválido!');
+        }else{
+          this.registerLogin();
+        }
+        resolve();
+      });
+    });
+  }
+
+  async presentAlert(msg: string): Promise<void> {
+    const alert = await this.alertCtrl.create({
+      title: 'Alerta',
+      message: msg,
+      buttons: [
+        {
+          text: 'Ok'
+        }
+      ]
+    });
+    await alert.present();
   }
 
 }
