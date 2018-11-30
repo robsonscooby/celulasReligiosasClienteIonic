@@ -48,12 +48,11 @@ export class LoginPage {
         this.navCtrl.setRoot('TabsPage');
       })
         .catch((error: any) => {
-          let toast = this.toastCtrl.create({ duration: 3000, position: 'bottom' });
           if (error.code == 'auth/invalid-email' || error.code == 'auth/user-disabled'
             || error.code == 'auth/user-not-found' || error.code == 'auth/wrong-password') {
-            toast.setMessage('E-mail ou senha inválida.');
+              this.msgToast('E-mail ou senha inválida.');
           }
-          toast.present();
+          
         });
       await this.loadingService.dismiss();
     } catch (error) {
@@ -62,11 +61,22 @@ export class LoginPage {
     }
   }
 
+  msgToast(mgs: string): void {
+    let toast = this.toastCtrl.create({ duration: 3000, position: 'bottom' });
+    toast.setMessage(mgs);
+    toast.present();
+  } 
+
   buscarMembro(email: string): Promise<Membro> {
     return new Promise(async (resolve) => {
-      await this.membroService.getUser(email).subscribe(u => u.filter(r => {
-        resolve(this.retUser = r)
-      })).unsubscribe;
+      await this.membroService.getUser(email).subscribe(async (res) => {
+        if(!res.length){
+          this.msgToast('Membro não existe.');
+        }else{
+          this.retUser = res[0];
+        }
+        resolve();
+      });
     });
   }
 
