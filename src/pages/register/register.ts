@@ -7,7 +7,6 @@ import { EnderecoProvider } from '../../providers/endereco/endereco';
 import { MembroService } from '../../providers/membro/membro.service';
 import { LoadingService } from '../../providers/loading.service';
 import { IgrejaService } from '../../providers/igreja/igreja.service';
-import { FirebaseMessagingProvider } from '../../providers/firebase-messaging';
 
 @IonicPage()
 @Component({
@@ -33,8 +32,7 @@ export class RegisterPage {
     private membroService: MembroService,
     public loading: LoadingService,
     private igrejaService: IgrejaService,
-    private alertCtrl: AlertController,
-    private fireMesseg: FirebaseMessagingProvider) {
+    private alertCtrl: AlertController) {
 
       this.loginForm = formBuilder.group({
         nome: ['', Validators.required],
@@ -54,7 +52,6 @@ export class RegisterPage {
       await this.afAuth.auth.createUserWithEmailAndPassword(this.membro.email, this.membro.senha);
       this.membro.senha = null;
       await this.membroService.save(this.membro);
-      await this.fireMesseg.createSubscribe(this.membro.code);
       await this.loading.dismiss();
       toast.setMessage('Cadastra realizado com sucesso.');
       this.navCtrl.pop();
