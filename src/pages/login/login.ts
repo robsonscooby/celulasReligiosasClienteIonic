@@ -45,6 +45,7 @@ export class LoginPage {
       this.authService.signIn(user).then(async () => {
         await this.buscarMembro(user.email);
         this.authService.setCode(this.retUser.code);
+        this.authService.setMembro(this.retUser);
         this.navCtrl.setRoot('TabsPage');
       })
         .catch((error: any) => {
