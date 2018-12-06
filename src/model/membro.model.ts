@@ -12,6 +12,7 @@ export class Membro {
     lng: string = null;
     thumbnailId: string = null;
     thumbnailURL: string = null;
+    tk: string = null;
 
     constructor(values: Object = {}){
         Object.keys(this).forEach(key => {

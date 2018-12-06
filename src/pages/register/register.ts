@@ -22,6 +22,7 @@ export class RegisterPage {
   errorEmail = false;
   errorPassword = false;
   membro = {} as Membro;
+  isenabled: boolean = true;
 
   selectedFile: { data: any, base64: string } = { data: null, base64: null };
 
@@ -38,6 +39,15 @@ export class RegisterPage {
     private alertCtrl: AlertController,
     private storage: AngularFireStorage) {
 
+      let perfil = this.navParams.get('membro');
+      if(perfil){
+        this.isenabled = false;
+        this.membro = perfil;
+        this.selectedFile.base64 = this.membro.thumbnailURL;
+      }else{
+        this.isenabled = true;
+      }
+
       this.loginForm = formBuilder.group({
         nome: ['', Validators.required],
         tel: ['', Validators.required],
@@ -48,6 +58,14 @@ export class RegisterPage {
         senha2: ['', Validators.required],
         code: ['', Validators.required],
       });
+  }
+
+  saveMembro(): void {
+    if(this.isenabled){
+      this.registerLogin();
+    }else{
+      this.editPerfil();
+    }
   }
 
   async registerLogin() {
@@ -79,6 +97,22 @@ export class RegisterPage {
         toast.setMessage('A senha digitada é muito fraca.');
       }
       toast.present();
+    }
+  }
+
+  async editPerfil() {
+    try {
+      await this.loading.present('Salvando...');
+      if (this.selectedFile) {
+        await this.uploadFile();
+      }
+      await this.membroService.save(this.membro);
+      await this.loading.dismiss();
+      this.navCtrl.pop();
+    }
+    catch (error) {
+      await this.loading.dismiss();
+      console.error(error);
     }
   }
 

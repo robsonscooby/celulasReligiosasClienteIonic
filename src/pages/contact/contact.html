@@ -9,6 +9,14 @@
     </ion-navbar>
   </ion-header>
 <ion-content padding class="transparent-header">
+    <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Assinar Notificações</ion-label>
+            <ion-toggle [(ngModel)]="notification" (ionChange)="presentAlertConfirmation()"></ion-toggle>
+          </ion-item>
+        </ion-col>
+      </ion-row>
   <div id="content">
     <div id="profile-info" padding>
       <img id="profile-image" [src]="membro.thumbnailURL">
@@ -25,8 +33,13 @@
       </p>
     </div>
   </div>
-  <div text-center id="code">
+  <div text-center>
     <p>Código de sua Igreja</p>
     <h1><b>{{membro.code}}</b></h1>
   </div>
+  <ion-fab right bottom>
+    <button ion-fab color="light" (click)="openEdit()">
+      <ion-icon name="md-create"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>

@@ -4,20 +4,22 @@
   </ion-navbar>
 </ion-header>
 <ion-content no-padding>
-    <ion-grid *ngIf="selectedFile.base64">
-        <img [src]="selectedFile.base64" class="img-top-profile">
-        <button ion-button icon-only (click)="selectedFile = { data: null, base64: null }">
-          <ion-icon name="ios-trash"></ion-icon>
-        </button>
-      </ion-grid>
-      <div *ngIf="!selectedFile.base64">
-        <div class="img-input" (click)="inputFile.click()">
-          <ion-icon name="ios-images"></ion-icon>
-          <p>Adicionar Foto</p>
-        </div>
-        <input type="file" #inputFile class="inputfile" (change)="openFile($event)" />
-      </div>
-  <form [formGroup]="loginForm" (submit)="validalogin(user)">
+  <ion-grid *ngIf="selectedFile.base64">
+    <img [src]="selectedFile.base64" class="img-top-profile">
+    <ion-buttons text-center>
+      <button ion-button round outline (click)="selectedFile = { data: null, base64: null }">
+        <ion-icon name="ios-trash"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-grid>
+  <div *ngIf="!selectedFile.base64">
+    <div class="img-input" (click)="inputFile.click()">
+      <ion-icon name="ios-images"></ion-icon>
+      <p>Adicionar Foto</p>
+    </div>
+    <input type="file" #inputFile class="inputfile" (change)="openFile($event)" />
+  </div>
+  <form [formGroup]="loginForm" (submit)="saveMembro()">
     <ion-item>
       <ion-label floating>Seu Nome</ion-label>
       <ion-input [(ngModel)]="membro.nome" formControlName="nome" type="text" placeholder="Seu Nome" clearInput
@@ -42,30 +44,30 @@
         clearOnEdit="false">
       </ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="isenabled">
       <ion-label floating>E-mail</ion-label>
       <ion-input [(ngModel)]="membro.email" formControlName="email" type="text" placeholder="E-mail" clearInput
         clearOnEdit="false">
       </ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="isenabled">
       <ion-label floating>Senha</ion-label>
       <ion-input [(ngModel)]="membro.senha1" formControlName="senha1" type="password" placeholder="Senha" clearInput
         clearOnEdit="false">
       </ion-input>
     </ion-item>
-    <ion-item>
-        <ion-label floating>Confirmar Senha</ion-label>
-        <ion-input [(ngModel)]="membro.senha2" formControlName="senha2" type="password" placeholder="Confirmar Senha" clearInput
-          clearOnEdit="false">
-        </ion-input>
-      </ion-item>
-    <ion-item>
-        <ion-label floating>Código Igreja</ion-label>
-        <ion-input [(ngModel)]="membro.code" formControlName="code" type="text" placeholder="Código Igreja" clearInput
-          clearOnEdit="false">
-        </ion-input>
-      </ion-item>
+    <ion-item *ngIf="isenabled">
+      <ion-label floating>Confirmar Senha</ion-label>
+      <ion-input [(ngModel)]="membro.senha2" formControlName="senha2" type="password" placeholder="Confirmar Senha"
+        clearInput clearOnEdit="false">
+      </ion-input>
+    </ion-item>
+    <ion-item *ngIf="isenabled">
+      <ion-label floating>Código Igreja</ion-label>
+      <ion-input [(ngModel)]="membro.code" formControlName="code" type="text" placeholder="Código Igreja" clearInput
+        clearOnEdit="false">
+      </ion-input>
+    </ion-item>
     <p></p>
     <ion-buttons text-center>
       <button ion-button round outline type="submit">Registrar</button>
