@@ -1,3 +1,40 @@
 page-register {
+    .text-input-md {
+        margin: 0px 0px;
+        width: calc(100% - 8px - 8px);
+    }
+    
+    .button-padding {
+        padding: 8px;
+    }
 
+    .button-clear:hover:not(.disable-hover) {
+        background-color: unset;
+        color: var(--ion-color-dark);
+    }
+
+    .img-input {
+        position: relative;
+        text-align: center;
+        height: 5.6rem;
+        width: 100%;
+        margin: 15px 0;
+        ion-icon {
+            font-size: 2.4em !important;
+            margin-top: 10px;
+            padding-bottom: 5px;
+        }
+        p {
+            margin-top: 0;
+        }
+    }
+    
+    .inputfile {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
 }

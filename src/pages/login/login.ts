@@ -6,7 +6,6 @@ import { MembroService } from '../../providers/membro/membro.service';
 import { Membro } from '../../model/membro.model';
 import { LoadingService } from '../../providers/loading.service';
 import { AuthService } from '../../providers/auth/auth-service';
-import { FirebaseMessagingProvider } from '../../providers/firebase-messaging';
 
 @IonicPage()
 @Component({
@@ -30,8 +29,7 @@ export class LoginPage {
     public navParams: NavParams,
     public formBuilder: FormBuilder,
     private membroService: MembroService,
-    public loadingService: LoadingService,
-    private fireMesseg: FirebaseMessagingProvider) {
+    public loadingService: LoadingService) {
 
     this.loginForm = formBuilder.group({
       email: ['', Validators.required],
@@ -48,7 +46,6 @@ export class LoginPage {
         await this.buscarMembro(user.email);
         this.authService.setCode(this.retUser.code);
         this.authService.setMembro(this.retUser);
-        await this.fireMesseg.createSubscribe(this.retUser.code);
         this.navCtrl.setRoot('TabsPage');
       })
         .catch((error: any) => {

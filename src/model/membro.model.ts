@@ -6,9 +6,12 @@ export class Membro {
     endereco : string = null;
     code : string = null;
     email : string = null;  
-    senha : string = null;    
+    senha1 : string = null; 
+    senha2 : string = null;    
     lat: string = null;
     lng: string = null;
+    thumbnailId: string = null;
+    thumbnailURL: string = null;
 
     constructor(values: Object = {}){
         Object.keys(this).forEach(key => {

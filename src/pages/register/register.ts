@@ -7,6 +7,7 @@ import { EnderecoProvider } from '../../providers/endereco/endereco';
 import { MembroService } from '../../providers/membro/membro.service';
 import { LoadingService } from '../../providers/loading.service';
 import { IgrejaService } from '../../providers/igreja/igreja.service';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 @IonicPage()
 @Component({
@@ -22,6 +23,8 @@ export class RegisterPage {
   errorPassword = false;
   membro = {} as Membro;
 
+  selectedFile: { data: any, base64: string } = { data: null, base64: null };
+
   constructor(
     private afAuth: AngularFireAuth, 
     private toastCtrl: ToastController,
@@ -32,7 +35,8 @@ export class RegisterPage {
     private membroService: MembroService,
     public loading: LoadingService,
     private igrejaService: IgrejaService,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private storage: AngularFireStorage) {
 
       this.loginForm = formBuilder.group({
         nome: ['', Validators.required],
@@ -40,7 +44,8 @@ export class RegisterPage {
         cep: ['', Validators.required],
         endereco: ['', Validators.required],
         email: ['', Validators.required],
-        senha: ['', Validators.required],
+        senha1: ['', Validators.required],
+        senha2: ['', Validators.required],
         code: ['', Validators.required],
       });
   }
@@ -49,8 +54,14 @@ export class RegisterPage {
     let toast = this.toastCtrl.create({ duration: 3000, position: 'bottom' });
     try {
       await this.loading.present('Cadastrando...');
-      await this.afAuth.auth.createUserWithEmailAndPassword(this.membro.email, this.membro.senha);
-      this.membro.senha = null;
+      await this.afAuth.auth.createUserWithEmailAndPassword(this.membro.email, this.membro.senha1);  
+      this.membro.senha1 = null;
+      this.membro.senha2 = null;
+
+      if (this.selectedFile) {
+        await this.uploadFile();
+      }
+
       await this.membroService.save(this.membro);
       await this.loading.dismiss();
       toast.setMessage('Cadastra realizado com sucesso.');
@@ -73,10 +84,19 @@ export class RegisterPage {
 
   validalogin() {
     if (this.loginForm.valid) {
-      this.buscarCode(this.membro.code);
+      if(this.validaPassword()){
+        this.buscarCode(this.membro.code);
+      }else{
+        this.membro.senha2 = null;
+        this.presentAlert('Senhas diferentes.');
+      }
     }else{
       this.presentAlert('Favor Preencher todos os campos.');
     }
+  }
+
+  validaPassword(): boolean {
+    return this.membro.senha1 == this.membro.senha2;
   }
     
   getEndereco() {
@@ -93,7 +113,7 @@ export class RegisterPage {
     return new Promise(async (resolve) => {
       await this.igrejaService.getAll(code).subscribe(async (res) => {
         if(!res.length){
-          this.presentAlert('Código inválido!');
+          this.presentAlert('Código da Igreja inválido!');
         }else{
           this.registerLogin();
         }
@@ -113,6 +133,40 @@ export class RegisterPage {
       ]
     });
     await alert.present();
+  }
+
+  async openFile(event: any): Promise<void> {
+    const file = event.target.files[0];
+
+    if (file.type.split('/')[0] !== 'image') {
+      console.error('Tipo de arquivo não suportado.');
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      const base64 = reader.result as string;
+      this.selectedFile.data = file;
+      this.selectedFile.base64 = base64;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async uploadFile(): Promise<void> {
+    if (!this.selectedFile.data) {
+      return;
+    }
+    try {
+      const id = `${new Date().getTime()}_${this.selectedFile.data.name}`;
+      const filePath = `membros/${id}`;
+      const fileRef = this.storage.ref(filePath);
+      await this.storage.upload(filePath, this.selectedFile.data);
+      this.membro.thumbnailURL = await fileRef.getDownloadURL().toPromise();
+      this.membro.thumbnailId = id;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 }
