@@ -25,20 +25,12 @@
     </ion-row>
   </ion-grid>
   <ion-list>
-    <ion-item-sliding *ngFor="let celula of celulaList | async" #item>
-      <ion-item>
+    <ion-item *ngFor="let celula of celulaList | async" (click)="more(celula)" >
         <ion-avatar item-start>
           <img [src]="celula.thumbnailURL ? celula.thumbnailURL : 'assets/imgs/logo.png'">
         </ion-avatar>
         <h2>{{celula.nome}}</h2>
         <p>{{celula.descricao}}</p>
-      </ion-item>
-      <ion-item-options>
-        <button ion-button color="secondary" (click)="more(item, celula)">
-          <ion-icon name="menu"></ion-icon>
-          Mais
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
+    </ion-item>
   </ion-list>
 </ion-content>

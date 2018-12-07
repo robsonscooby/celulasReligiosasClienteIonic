@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController, NavParams, ItemSliding } from 'ionic-angular';
+import { IonicPage, NavController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Celula } from '../../model/celula.model';
 import { LoadingService } from '../../providers/loading.service';
@@ -49,8 +49,7 @@ export class HomePage {
     
   }
 
-  more(item: ItemSliding, celula: Celula) :void {
-    item.close();
+  more(celula: Celula) :void {
     this.navCtrl.push('DetailPage', {'celula' : celula});
   }
 
